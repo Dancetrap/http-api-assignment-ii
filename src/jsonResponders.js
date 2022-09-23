@@ -4,23 +4,23 @@
 // We will be working with databases in the next few weeks.
 const users = {};
 
-//function to respond with a json object
-//takes request, response, status code and object to send
+// function to respond with a json object
+// takes request, response, status code and object to send
 const respondJSON = (request, response, status, object) => {
   response.writeHead(status, { 'Content-Type': 'application/json' });
   response.write(JSON.stringify(object));
   response.end();
 };
 
-//function to respond without json body
-//takes request, response and status code
+// function to respond without json body
+// takes request, response and status code
 const respondJSONMeta = (request, response, status) => {
   response.writeHead(status, { 'Content-Type': 'application/json' });
   response.end();
 };
 
-//return user object as JSON
-const getUsers = (request, response, body) => {
+// return user object as JSON
+const getUsers = (request, response) => {
   const responseJSON = {
     users,
   };
@@ -28,39 +28,38 @@ const getUsers = (request, response, body) => {
   respondJSON(request, response, 200, responseJSON);
 };
 
-//function to add a user from a POST body
+// function to add a user from a POST body
 const addUser = (request, response, body) => {
-  //default json message
+  // default json message
   const responseJSON = {
     message: 'Name and age are both required.',
   };
 
-  //check to make sure we have both fields
-  //We might want more validation than just checking if they exist
-  //This could easily be abused with invalid types (such as booleans, numbers, etc)
-  //If either are missing, send back an error message as a 400 badRequest
+  // check to make sure we have both fields
+  // We might want more validation than just checking if they exist
+  // This could easily be abused with invalid types (such as booleans, numbers, etc)
+  // If either are missing, send back an error message as a 400 badRequest
   if (!body.name || !body.age) {
     responseJSON.id = 'missingParams';
     return respondJSON(request, response, 400, responseJSON);
   }
 
-  //default status code to 204 updated
+  // default status code to 204 updated
   let responseCode = 204;
 
-  //If the user doesn't exist yet
-  if(!users[body.name]) {
-    
-    //Set the status code to 201 (created) and create an empty user
+  // If the user doesn't exist yet
+  if (!users[body.name]) {
+    // Set the status code to 201 (created) and create an empty user
     responseCode = 201;
     users[body.name] = {};
   }
 
-  //add or update fields for this user name
+  // add or update fields for this user name
   users[body.name].name = body.name;
   users[body.name].age = body.age;
 
-  //if response is created, then set our created message
-  //and sent response with a message
+  // if response is created, then set our created message
+  // and sent response with a message
   if (responseCode === 201) {
     responseJSON.message = 'Created Successfully';
     return respondJSON(request, response, responseCode, responseJSON);
@@ -80,9 +79,9 @@ const notReal = (request, response) => {
   respondJSON(request, response, 404, responseJSON);
 };
 
-//public exports
+// public exports
 module.exports = {
-    addUser,
-    getUsers,
-    notReal,
+  addUser,
+  getUsers,
+  notReal,
 };

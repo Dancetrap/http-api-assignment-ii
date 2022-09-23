@@ -15,9 +15,8 @@ const port = process.env.PORT || process.env.NODE_PORT || 3000;
 // object in the same way we have used urlStruct before.
 
 const parseBody = (request, response, handler) => {
-  
-  //The request will come in in pieces. We will store those pieces in this
-  //body array.
+  // The request will come in in pieces. We will store those pieces in this
+  // body array.
   const body = [];
 
   request.on('error', (err) => {
@@ -25,7 +24,6 @@ const parseBody = (request, response, handler) => {
     response.statusCode = 400;
     response.end();
   });
-
 
   request.on('data', (chunk) => {
     body.push(chunk);
@@ -35,15 +33,13 @@ const parseBody = (request, response, handler) => {
     const bodyString = Buffer.concat(body).toString();
     const bodyParams = query.parse(bodyString);
 
-
     handler(request, response, bodyParams);
   });
 };
 
 const handlePost = (request, response, parsedUrl) => {
-  
-  //If they go to /addUser
-  if(parsedUrl.pathname === '/addUser') {
+  // If they go to /addUser
+  if (parsedUrl.pathname === '/addUser') {
     parseBody(request, response, jsonHandler.addUser);
   // } else if (parsedUrl.pathname === '/getUsers') {
   //   parseBody(request, response, jsonHandler.getUsers);
@@ -53,12 +49,12 @@ const handlePost = (request, response, parsedUrl) => {
 };
 
 const handleGet = (request, response, parsedUrl) => {
-  //route to correct method based on url
+  // route to correct method based on url
   if (parsedUrl.pathname === '/style.css') {
     htmlHandler.getCSS(request, response);
   } else if (parsedUrl.pathname === '/getUsers') {
     jsonHandler.getUsers(request, response);
-  } else if (parsedUrl.pathname === '/notReal'){
+  } else if (parsedUrl.pathname === '/notReal') {
     jsonHandler.notReal(request, response);
   } else {
     htmlHandler.getIndex(request, response);
@@ -67,12 +63,12 @@ const handleGet = (request, response, parsedUrl) => {
 
 // function to handle requests
 const onRequest = (request, response) => {
-  //parse url into individual parts
-  //returns an object of url parts by name
+  // parse url into individual parts
+  // returns an object of url parts by name
   const parsedUrl = url.parse(request.url);
 
-  //check if method was POST, otherwise assume GET 
-  //for the sake of this example
+  // check if method was POST, otherwise assume GET
+  // for the sake of this example
   if (request.method === 'POST') {
     handlePost(request, response, parsedUrl);
   } else {
