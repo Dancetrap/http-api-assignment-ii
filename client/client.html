@@ -74,41 +74,62 @@
     };
 
     const getPost = async (userForm) => {
-      const nameForm = document.querySelector('#nameForm');
+      // const nameForm = document.querySelector('#nameForm');
       //Grab all the info from the form
       const nameAction = userForm.getAttribute('action');
       const nameMethod = userForm.getAttribute('method');
 
-      console.log(nameAction);
-      console.log(nameMethod);
-      
-      const nameField = nameForm.querySelector('#nameField');
-      const ageField = nameForm.querySelector('#ageField');
+      // const url = userForm.value;
+      // const nameAction = userForm.value;
+      // const userField = document.querySelector('#urlField');
+      // const nameField = nameForm.querySelector('#nameField');
+      // const ageField = nameForm.querySelector('#ageField');
 
       //Build a data string in the FORM-URLENCODED format.
-      const formData = `name=${nameField.value}&age=${ageField.value}`;
-      console.log(formData);
-      //Make a fetch request and await a response. Set the method to
-      //the one provided by the form (POST). Set the headers. Content-Type
-      //is the type of data we are sending. Accept is the data we would like
-      //in response. Then add our FORM-URLENCODED string as the body of the request.
+      // const formData = `name=${nameField.value}&age=${ageField.value}`;
+
+      // The problem is with the fetch request
+      // let response = await fetch(nameAction);
+      // console.log(nameAction);
+
       let response = await fetch(nameAction, {
         method: nameMethod,
         headers: {
-          // 'Content-Type': 'application/x-www-form-urlencoded',
+          'Content-Type': 'application/x-www-form-urlencoded',
           'Accept': 'application/json',
         },
-        body: formData,
       });
-      console.log(formData);
+
+      // console.log(formData);
 
       //Once we have a response, handle it.
       handleResponse(response);
     };
 
+    // const sendFetch = async (url, acceptedType) => {
+    //   const nameForm = document.querySelector('#nameForm');
+    //   //Grab all the info from the form
+    //   const nameAction = userForm.getAttribute('action');
+    //   const nameMethod = userForm.getAttribute('method');
+
+    //   //Call fetch, wait til we get a response, and then store that response in the variable.
+    //   const options = {
+    //     method: nameMethod,
+    //     headers: {'Accept': acceptedType},
+    //   }
+
+    //   // let fetchPromise = await fetch(url, options);
+    //   let fetchPromise = fetch(url, options);
+    //   // console.log(options.headers);
+    //   //Call handleResponse with the response we got back from the server.
+    //   // handleResponse(response);
+    //   fetchPromise.then((response) => { handleResponse(response) });
+    // };
+
     const init = () => {
       //Grab the form
       const nameForm = document.querySelector('#nameForm');
+      // const userForm = document.querySelector('#urlField');
       const userForm = document.querySelector('#userForm');
       //Create an addUser function that cancels the forms default action and
       //calls our sendPost function above.
@@ -118,7 +139,7 @@
         return false;
       }
 
-      const getUser = (e) => {
+      const getUsers = (e) => {
         e.preventDefault();
         getPost(userForm);
         return false;
@@ -126,7 +147,7 @@
       
       //Call addUser when the submit event fires on the form.
       nameForm.addEventListener('submit', addUser);
-      userForm.addEventListener('submit', getUser);
+      userForm.addEventListener('submit', getUsers);
     };
 
     //When the window loads, run init.
@@ -143,7 +164,7 @@
       <input id="ageField" type="number" name="age" min="0" max="100" step="1"/>
       <input type="submit" value="Add User" />
     </form>
-    <form id="userForm" action="/getUsers" method="post">
+    <form id="userForm" action="/getUsers" method="get">
       <select id='urlField'>
         <option value='/getUsers'>/getUsers</option>
         <option value='/notReal'>/notReal</option>

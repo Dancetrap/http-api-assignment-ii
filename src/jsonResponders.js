@@ -23,11 +23,8 @@ const respondJSONMeta = (request, response, status) => {
 const getUsers = (request, response, body) => {
   const responseJSON = {
     users,
+
   };
-  // if (!body.name || !body.age) {
-  //   responseJSON.id = 'missingParams';
-  //   return respondJSON(request, response, 400, responseJSON);
-  // }
 
   respondJSON(request, response, 200, responseJSON);
 };
