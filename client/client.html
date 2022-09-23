@@ -30,15 +30,17 @@
           content.innerHTML = `Error code not implemented by client.`;
           break;
       }
-
+      const method = document.querySelector('#methodSelect');
       //Parse the response to json. This works because we know the server always
       //sends back json. Await because .json() is an async function.
       // let obj = await response.json();
+      if(method.value == "get"){
         response.text().then((resText) => {
           let parsedResponse = JSON.parse(resText);
           console.log(parsedResponse);
           content.innerHTML += `<p>${parsedResponse.message}</p>`;
         });
+      }
     };
 
     const sendPost = async (nameForm) => {
@@ -66,13 +68,48 @@
       });
 
       //Once we have a response, handle it.
+      // console.log(nameAction);
+      // console.log(nameMethod);
+      handleResponse(response);
+    };
+
+    const getPost = async (userForm) => {
+      const nameForm = document.querySelector('#nameForm');
+      //Grab all the info from the form
+      const nameAction = userForm.getAttribute('action');
+      const nameMethod = userForm.getAttribute('method');
+
+      console.log(nameAction);
+      console.log(nameMethod);
+      
+      const nameField = nameForm.querySelector('#nameField');
+      const ageField = nameForm.querySelector('#ageField');
+
+      //Build a data string in the FORM-URLENCODED format.
+      const formData = `name=${nameField.value}&age=${ageField.value}`;
+      console.log(formData);
+      //Make a fetch request and await a response. Set the method to
+      //the one provided by the form (POST). Set the headers. Content-Type
+      //is the type of data we are sending. Accept is the data we would like
+      //in response. Then add our FORM-URLENCODED string as the body of the request.
+      let response = await fetch(nameAction, {
+        method: nameMethod,
+        headers: {
+          // 'Content-Type': 'application/x-www-form-urlencoded',
+          'Accept': 'application/json',
+        },
+        body: formData,
+      });
+      console.log(formData);
+
+      //Once we have a response, handle it.
       handleResponse(response);
     };
 
     const init = () => {
       //Grab the form
       const nameForm = document.querySelector('#nameForm');
-      // const userForm = document.querySelector('#userForm');
+      const userForm = document.querySelector('#userForm');
       //Create an addUser function that cancels the forms default action and
       //calls our sendPost function above.
       const addUser = (e) => {
@@ -81,15 +118,15 @@
         return false;
       }
 
-      // const getUser = (e) => {
-      //   e.preventDefault();
-      //   sendPost(userForm);
-      //   return false;
-      // }
+      const getUser = (e) => {
+        e.preventDefault();
+        getPost(userForm);
+        return false;
+      }
       
       //Call addUser when the submit event fires on the form.
       nameForm.addEventListener('submit', addUser);
-      // userForm.addEventListener('submit', getUser);
+      userForm.addEventListener('submit', getUser);
     };
 
     //When the window loads, run init.
@@ -106,7 +143,7 @@
       <input id="ageField" type="number" name="age" min="0" max="100" step="1"/>
       <input type="submit" value="Add User" />
     </form>
-    <form id="userForm" action="/getUsers" method="get">
+    <form id="userForm" action="/getUsers" method="post">
       <select id='urlField'>
         <option value='/getUsers'>/getUsers</option>
         <option value='/notReal'>/notReal</option>

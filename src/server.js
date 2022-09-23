@@ -44,9 +44,6 @@ const handlePost = (request, response, parsedUrl) => {
   
   //If they go to /addUser
   if(parsedUrl.pathname === '/addUser') {
-    
-    //Call our below parseBody handler, and in turn pass in the
-    //jsonHandler.addUser function as the handler callback function.
     parseBody(request, response, jsonHandler.addUser);
   // } else if (parsedUrl.pathname === '/getUsers') {
   //   parseBody(request, response, jsonHandler.getUsers);
@@ -61,8 +58,8 @@ const handleGet = (request, response, parsedUrl) => {
     htmlHandler.getCSS(request, response);
   } else if (parsedUrl.pathname === '/getUsers') {
     jsonHandler.getUsers(request, response);
-  } else if (parsedUrl.pathname === '/notReal'){
-    jsonHandler.notReal(request, response);
+  // } else if (parsedUrl.pathname === '/notReal'){
+  //   jsonHandler.notReal(request, response);
   } else {
     htmlHandler.getIndex(request, response);
   }
