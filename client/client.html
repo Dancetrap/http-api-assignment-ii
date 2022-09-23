@@ -72,7 +72,7 @@
     const init = () => {
       //Grab the form
       const nameForm = document.querySelector('#nameForm');
-      
+      // const userForm = document.querySelector('#userForm');
       //Create an addUser function that cancels the forms default action and
       //calls our sendPost function above.
       const addUser = (e) => {
@@ -80,9 +80,16 @@
         sendPost(nameForm);
         return false;
       }
+
+      // const getUser = (e) => {
+      //   e.preventDefault();
+      //   sendPost(userForm);
+      //   return false;
+      // }
       
       //Call addUser when the submit event fires on the form.
       nameForm.addEventListener('submit', addUser);
+      // userForm.addEventListener('submit', getUser);
     };
 
     //When the window loads, run init.

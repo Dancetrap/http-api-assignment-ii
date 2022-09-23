@@ -71,12 +71,17 @@ const addUser = (request, response, body) => {
   return respondJSONMeta(request, response, responseCode);
 };
 
-const notReal = (request, response) =>{
+const notReal = (request, response) => {
+  const responseJSON = {
+    message: 'The page you are looking for was not found',
+  };
 
+  respondJSON(request, response, 404, responseJSON);
 };
 
 //public exports
 module.exports = {
     addUser,
     getUsers,
+    notReal,
 };
