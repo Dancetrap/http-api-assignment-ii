@@ -5,7 +5,7 @@
   <link rel="stylesheet" type="text/css" href="/style.css">
   
   <script>
-    const handleResponse = async (response) => {
+    const handleResponse = async (response, form) => {
       
       //Grab the content section
       const content = document.querySelector('#content');
@@ -35,11 +35,36 @@
       //sends back json. Await because .json() is an async function.
       // let obj = await response.json();
       if(method.value == "get"){
+        const urlField = document.querySelector('#urlField');
+        if(form.method == "post"){
         response.text().then((resText) => {
           let parsedResponse = JSON.parse(resText);
           console.log(parsedResponse);
           content.innerHTML += `<p>${parsedResponse.message}</p>`;
         });
+        } else if(form.method == "get")
+        {
+          // if(urlField.value == "/getUsers"){
+            response.text().then((resText) => {
+            let parsedResponse = JSON.parse(resText);
+            let parsedUsers = JSON.stringify(parsedResponse.users);
+            console.log(parsedResponse);
+            if(urlField.value == "/getUsers"){
+              content.innerHTML += `<p>${parsedUsers}</p>`;
+            }
+            else if(urlField.value == "/notReal"){
+              content.innerHTML += `<p>${parsedResponse.message}</p>`;
+            }
+            }); 
+          // }
+          // else if(urlField.value == "/notReal")
+          // {
+          //   response.text().then((resText) => {
+          //   let parsedResponse = JSON.parse(resText);
+          //   console.log(parsedResponse);
+          //   content.innerHTML += `<p>${parsedResponse.message}</p>`;
+          // });
+        }
       }
     };
 
@@ -70,7 +95,7 @@
       //Once we have a response, handle it.
       // console.log(nameAction);
       // console.log(nameMethod);
-      handleResponse(response);
+      handleResponse(response, nameForm);
     };
 
     const getPost = async (userForm) => {
@@ -81,7 +106,7 @@
 
       // const url = userForm.value;
       // const nameAction = userForm.value;
-      // const userField = document.querySelector('#urlField');
+      const userField = document.querySelector('#urlField');
       // const nameField = nameForm.querySelector('#nameField');
       // const ageField = nameForm.querySelector('#ageField');
 
@@ -92,7 +117,7 @@
       // let response = await fetch(nameAction);
       // console.log(nameAction);
 
-      let response = await fetch(nameAction, {
+      let response = await fetch(userField.value, {
         method: nameMethod,
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
@@ -103,7 +128,7 @@
       // console.log(formData);
 
       //Once we have a response, handle it.
-      handleResponse(response);
+      handleResponse(response, userForm);
     };
 
     // const sendFetch = async (url, acceptedType) => {
@@ -131,6 +156,7 @@
       const nameForm = document.querySelector('#nameForm');
       // const userForm = document.querySelector('#urlField');
       const userForm = document.querySelector('#userForm');
+
       //Create an addUser function that cancels the forms default action and
       //calls our sendPost function above.
       const addUser = (e) => {

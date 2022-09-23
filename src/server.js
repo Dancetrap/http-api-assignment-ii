@@ -58,8 +58,8 @@ const handleGet = (request, response, parsedUrl) => {
     htmlHandler.getCSS(request, response);
   } else if (parsedUrl.pathname === '/getUsers') {
     jsonHandler.getUsers(request, response);
-  // } else if (parsedUrl.pathname === '/notReal'){
-  //   jsonHandler.notReal(request, response);
+  } else if (parsedUrl.pathname === '/notReal'){
+    jsonHandler.notReal(request, response);
   } else {
     htmlHandler.getIndex(request, response);
   }

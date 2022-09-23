@@ -23,7 +23,6 @@ const respondJSONMeta = (request, response, status) => {
 const getUsers = (request, response, body) => {
   const responseJSON = {
     users,
-
   };
 
   respondJSON(request, response, 200, responseJSON);
@@ -74,6 +73,7 @@ const addUser = (request, response, body) => {
 
 const notReal = (request, response) => {
   const responseJSON = {
+    id: 'notFound',
     message: 'The page you are looking for was not found',
   };
 
